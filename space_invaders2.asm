@@ -1,7 +1,7 @@
 org $8000
 
 screen_setup:
-; set the border to black   
+; set the border to blackest of nights
 	ld a,pBlack
 	call 8859
 	call 3503 ; ROM routine - clears screen, opens channel 2.
