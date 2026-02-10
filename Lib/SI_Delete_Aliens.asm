@@ -7,7 +7,7 @@ delete_aliens:
 
 ; delete row 1 of aliens
 delete_aliens_row1:
-    ld ix,a1_db                 ; get alien 1 database
+    ld ix,ar1_db                 ; get alien 1 database
     bit $00,(ix)                ; test if row exists
     ret z                       ; return immediately if row doesn't exist
     call delete_aliens_row      ; otherwise, delete current positions of aliens

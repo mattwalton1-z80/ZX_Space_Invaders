@@ -9,7 +9,7 @@ check_bullet_collision:
 	; get bottom row of aliens
 	; check if row exists
 check_alien_row_bottom:
-    ld ix,a1_db                 ; get alien 1 database
+    ld ix,ar1_db                 ; get alien 1 database
     bit $00,(ix)				; test first bit of exists flag
 	jr z,check_alien_row_second_from_bottom	; if row doesn't exist (Z flag is set when bit tested is zero), skip to next row
 	
@@ -59,7 +59,7 @@ check_alien_row_second_from_bottom:
 	
 check_row_collision_alien_1:
 	; IX contains address of alien row
-	ld ix,a1_db                 ; get alien 1 database
+	ld ix,ar1_db                 ; get alien 1 database
 	ld a,(ix+2)				; get low byte of starting alien row position
 	and 31					; AND with 31 to get x position (0-32) only
 	sla a					; multiply by 8 to get total number of pixels, i.e. shift bits left 3 times
@@ -134,7 +134,7 @@ bullet_posn_calc:
 
 
 	; Advance IX to first alien spot
-	ld ix,a1_db                 ; get alien 1 database
+	ld ix,ar1_db                 ; get alien 1 database
 	ld 	bc,3
 	add ix,bc
 

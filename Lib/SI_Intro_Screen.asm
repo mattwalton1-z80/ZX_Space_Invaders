@@ -1,14 +1,11 @@
 title_screen:
-	; print title
-	ld de,poorly_written
-	ld bc,poorly_written_len
-	call 8252
+	; print text
 	ld de,title1    			; address of title
     ld bc,title1_string_len		; length of string to print        
-    call 8252					; print our string 
-    ld de,title2    			; address of title
-    ld bc,title2_string_len		; length of string to print        
-    call 8252					; print our string 
+    call 8252					; ROM routine to print string
+    ld de,title2    			
+    ld bc,title2_string_len		       
+    call 8252					 
     ld de,alien_score_high
 	ld bc,alien_score_high_len
 	call 8252
@@ -18,10 +15,13 @@ title_screen:
     ld de,alien_score_low
 	ld bc,alien_score_low_len
 	call 8252
+	ld de,poorly_written
+	ld bc,poorly_written_len
+	call 8252
 
 alien_scroll_score_hi:
 	ld hl,a1_noshift            ; use address of alien 1 graphic 
-	ld de,$4860					; define starting address for alien on left
+	ld de,$4800					; define starting address for alien on left
 	
 	xor a
 	ld (alienoffset),a			; reset alien offset to 0
@@ -146,7 +146,7 @@ alien_scroll_score_hi_loop:
 	
 alien_scroll_score_med:
 	ld hl,a2_noshift            ; use address of alien 2 graphic
-	ld de,$48A0					; define starting address for alien on left
+	ld de,$4840					; define starting address for alien on left
 	
 	xor a
 	ld (alienoffset),a			; reset alien offset to 0
@@ -272,7 +272,7 @@ alien_scroll_score_med_loop:
 	
 alien_scroll_score_lo:
 	ld hl,a3_noshift            ; use address of alien 3 graphic
-	ld de,$48E0					; define starting address for alien on left
+	ld de,$4880					; define starting address for alien on left
 	
 	xor a
 	ld (alienoffset),a			; reset alien offset to 0
@@ -399,22 +399,28 @@ alien_scroll_score_lo_loop:
 	xor a
 	ld (alienoffset),a 
 
+	; keys string
+	ld de,keys_string
+	ld bc,keys_string_len
+	call 8252
+
 	; start string
-	ld de,start_string    		; address of title
-    ld bc,start_string_len		; length of string to print        
-    call 8252					; print our string 
+	ld de,start_string    		
+    ld bc,start_string_len		      
+    call 8252					
 
 
 ; ***** start scrolling ****
 scroll:
 	halt				; slow the scroll a bit
     ld b,8              ; pixel line counter
-    ld hl,$505F         ; set HL initially as last character on row
+    ld hl,$48FF         ; set HL initially as last character on row
 
 row_loop:
 	dec b               ; decrement pixel line counter
     push bc             ; and store it
 
+; check for "S" being pressed to start the game
 	ld bc,$FDFE 		; port for keyboard row (LHS, second from bottom).
     in a,(c) 			; read keyboard.
     ld d,a 				; store result in d register.
@@ -460,10 +466,6 @@ exit_intro_screen:
 	pop	bc				; restore BC before leaving
 
 ; clear screen
-;    ld a,pBlack
-;    call 8859
-;	call 3503 ; ROM routine - clears screen, opens chan 2.
-
 	call page_fade
 
 ; set global attributes (black screen, white text)

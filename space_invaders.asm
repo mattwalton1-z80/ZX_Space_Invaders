@@ -40,7 +40,7 @@ screen_setup:
     ld (score),bc           ; reset score
 
 ; prepare alien row 1
-    ld hl,a1_db         ; populate alien 1 database
+    ld hl,ar1_db        ; populate alien row 1 database
     ld (hl),1           ; row exists
     inc hl
     ld (hl),$B0         ; default y position for row (high byte first) - Double Buffer display
@@ -57,6 +57,14 @@ a1_prep_loop:
     inc hl
     add a,2             ; advance x position by 2
     djnz a1_prep_loop
+
+; prepare alien row 2
+
+; prepare alien row 3
+
+; prepare alien row 4
+
+; prepare alien row 5
 
 ; print title screen
     call title_screen
@@ -143,7 +151,8 @@ main_loop:
     bbulletoffset   defb 0        ; store base offset at time of firing bullet (vals 0,1,2,3)
 	bulletkill     defb 0     	  ; flag when bullet goes above screen and needs to be reset after buffer copy
 
-    a1_db           defb 0          ; whole line exists (11x alien 1, top row) (0=no)
+; alien row 1 database 
+    ar1_db          defb 0          ; whole line exists (11x alien 1) (0=no)
                     defb 0,0        ; y position of line (row)
                     defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
                     defb 0,0
@@ -156,7 +165,69 @@ main_loop:
                     defb 0,0
                     defb 0,0
                     defb 0,0
-    a1_noshift	    defb 6,0,0       ; shifted alien 1 sprites
+
+; alien row 2 database
+    ar2_1_db        defb 0          ; whole line exists (11x alien 2) (0=no)
+                    defb 0,0        ; y position of line (row)
+                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+
+; alien row 3 database
+    ar2_2_db        defb 0          ; whole line exists (11x alien 2) (0=no)
+                    defb 0,0        ; y position of line (row)
+                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+
+; alien row 4 database
+    ar3_1_db        defb 0          ; whole line exists (11x alien 3) (0=no)
+                    defb 0,0        ; y position of line (row)
+                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+
+; alien row 5 database
+    ar3_2_db        defb 0          ; whole line exists (11x alien 3) (0=no)
+                    defb 0,0        ; y position of line (row)
+                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+                    defb 0,0
+
+; alien type 1
+    a1_noshift	    defb 6,0,0      ; alien 1 sprite, not shifted
                     defb 15,0,0
                     defb 31,128,0
                     defb 54,192,0
@@ -164,7 +235,7 @@ main_loop:
                     defb 22,128,0
                     defb 32,64,0
                     defb 16,128,0
-    a1_shift2	    defb 1,128,0
+    a1_shift2	    defb 1,128,0    ; alien 1 sprite, shifted 2 pixels to right
                     defb 3,192,0
                     defb 7,224,0
                     defb 13,176,0
@@ -172,7 +243,7 @@ main_loop:
                     defb 2,64,0
                     defb 5,160,0
                     defb 10,80,0
-    a1_shift4	    defb 0,96,0
+    a1_shift4	    defb 0,96,0     ; alien 1 sprite, shifted 4 pixels to right
                     defb 0,240,0
                     defb 1,248,0
                     defb 3,108,0
@@ -180,7 +251,7 @@ main_loop:
                     defb 1,104,0
                     defb 2,4,0
                     defb 1,8,0
-    a1_shift6	    defb 0,24,0
+    a1_shift6	    defb 0,24,0     ; alien 1 sprite, shifted 6 pixels to right
                     defb 0,60,0
                     defb 0,126,0
                     defb 0,219,0
@@ -188,7 +259,7 @@ main_loop:
                     defb 0,36,0
                     defb 0,90,0
                     defb 0,165,0
-    a2_noshift	    defb 32,128,0     ; shifted alien 2 sprites
+    a2_noshift	    defb 32,128,0   ; alien 2 sprite, not shifted
                     defb 145,32,0
                     defb 191,160,0
                     defb 238,224,0
@@ -196,7 +267,7 @@ main_loop:
                     defb 127,192,0
                     defb 32,128,0
                     defb 64,64,0
-    a2_shift2	    defb 8,32,0
+    a2_shift2	    defb 8,32,0     ; alien 2 sprite, shifted 2 pixels to right
                     defb 4,64,0
                     defb 15,224,0
                     defb 27,176,0
@@ -204,7 +275,7 @@ main_loop:
                     defb 47,232,0
                     defb 40,40,0
                     defb 6,192,0
-    a2_shift4	    defb 2,8,0
+    a2_shift4	    defb 2,8,0      ; alien 2 sprite, shifted 4 pixels to right
                     defb 9,18,0
                     defb 11,250,0
                     defb 14,238,0
@@ -212,7 +283,7 @@ main_loop:
                     defb 7,252,0
                     defb 2,8,0
                     defb 4,4,0
-    a2_shift6	    defb 0,130,0
+    a2_shift6	    defb 0,130,0    ; alien 2 sprite, shifted 6 pixels to right
                     defb 0,68,0
                     defb 0,254,0
                     defb 1,187,0
@@ -220,7 +291,7 @@ main_loop:
                     defb 2,254,128
                     defb 2,130,128
                     defb 0,108,0
-    a3_noshift	    defb 15,0,0          ; shifted alien 3 sprites
+    a3_noshift	    defb 15,0,0     ; alien 3 sprite, not shifted
                     defb 127,224,0
                     defb 255,240,0
                     defb 230,112,0
@@ -228,7 +299,7 @@ main_loop:
                     defb 25,128,0
                     defb 54,192,0
                     defb 192,48,0
-	a3_shift2	    defb 3,192,0
+	a3_shift2	    defb 3,192,0    ; alien 3 sprite, shifted 2 pixels to right
                     defb 31,248,0
                     defb 63,252,0
                     defb 57,156,0
@@ -236,7 +307,7 @@ main_loop:
                     defb 14,112,0
                     defb 25,152,0
                     defb 12,48,0
-	a3_shift4	    defb 0,240,0
+	a3_shift4	    defb 0,240,0    ; alien 3 sprite, shifted 4 pixels to right
                     defb 7,254,0
                     defb 15,255,0
                     defb 14,103,0
@@ -244,7 +315,7 @@ main_loop:
                     defb 1,152,0
                     defb 3,108,0
                     defb 12,3,0
-	a3_shift6	    defb 0,60,0
+	a3_shift6	    defb 0,60,0     ; alien 3 sprite, shifted 6 pixels to right
                     defb 1,255,128
                     defb 3,255,192
                     defb 3,153,192
@@ -252,7 +323,7 @@ main_loop:
                     defb 0,231,0
                     defb 1,153,128
                     defb 0,195,0
-    abang_noshift	defb 4,0,0
+    abang_noshift	defb 4,0,0      ; alien hit sprite, not shifted
                     defb 36,128,0
                     defb 17,0,0
                     defb 0,0,0
@@ -260,7 +331,7 @@ main_loop:
                     defb 0,0,0
                     defb 17,0,0
                     defb 36,128,0
-    abang_shift2	defb 4,0,0
+    abang_shift2	defb 4,0,0      ; alien hit sprite, shifted 2 pixels to right
                     defb 36,128,0
                     defb 17,0,0
                     defb 0,0,0
@@ -268,7 +339,7 @@ main_loop:
                     defb 0,0,0
                     defb 17,0,0
                     defb 36,128,0
-    abang_shift4	defb 0,64,0
+    abang_shift4	defb 0,64,0     ; alien hit sprite, shifted 4 pixels to right
                     defb 2,72,0
                     defb 1,16,0
                     defb 0,0,0
@@ -276,7 +347,7 @@ main_loop:
                     defb 0,0,0
                     defb 1,16,0
                     defb 2,72,0
-    abang_shift6	defb 0,16,0
+    abang_shift6	defb 0,16,0     ; alien hit sprite, shifted 6 pixels to right
                     defb 0,146,0
                     defb 0,68,0
                     defb 0,0,0
@@ -284,7 +355,7 @@ main_loop:
                     defb 0,0,0
                     defb 0,68,0
                     defb 0,146,0
-	bullet_noshift	defb 0
+	bullet_noshift	defb 0          ; bullet sprite, not shifted
                     defb 1
                     defb 1
                     defb 1
@@ -292,7 +363,7 @@ main_loop:
                     defb 1
                     defb 1
                     defb 0
-    bullet_shift2	defb 0
+    bullet_shift2	defb 0          ; bullet sprite, shifted 2 pixels to right
                     defb 64
                     defb 64
                     defb 64
@@ -300,7 +371,7 @@ main_loop:
                     defb 64
                     defb 64
                     defb 0
-    bullet_shift4	defb 0
+    bullet_shift4	defb 0          ; bullet sprite, shifted 4 pixels to right
                     defb 16
                     defb 16
                     defb 16
@@ -308,7 +379,7 @@ main_loop:
                     defb 16
                     defb 16
                     defb 0
-    bullet_shift6	defb 0
+    bullet_shift6	defb 0          ; bullet sprite, shifted 6 pixels to right
                     defb 4
                     defb 4
                     defb 4
@@ -316,7 +387,7 @@ main_loop:
                     defb 4
                     defb 4
                     defb 0
-    blank_1_char    defb 0          ; blank chars to erase sprites - why?!?
+    blank_1_char    defb 0          ; blank chars to erase sprites - is there a better way?!?
                     defb 0
                     defb 0
                     defb 0
@@ -340,7 +411,7 @@ main_loop:
                     defb 0,0,0
                     defb 0,0,0
                     defb 0,0,0
-    base_noshift	defb 0,0      ; shifted base sprites
+    base_noshift	defb 0,0        ; base sprite, not shifted
                     defb 1,0
                     defb 3,128
                     defb 31,240
@@ -348,7 +419,7 @@ main_loop:
                     defb 127,252
                     defb 127,252
                     defb 127,252
-    base_shift2	    defb 0,0,0
+    base_shift2	    defb 0,0,0      ; base sprite, shifted 2 pixels to right
                     defb 0,64,0
                     defb 0,224,0
                     defb 7,252,0
@@ -356,7 +427,7 @@ main_loop:
                     defb 31,255,0
                     defb 31,255,0
                     defb 31,255,0
-    base_shift4	    defb 0,0,0
+    base_shift4	    defb 0,0,0      ; base sprite, shifted 4 pixels to right
                     defb 0,16,0
                     defb 0,56,0
                     defb 1,255,0
@@ -364,7 +435,7 @@ main_loop:
                     defb 7,255,192
                     defb 7,255,192
                     defb 7,255,192
-    base_shift6	    defb 0,0,0
+    base_shift6	    defb 0,0,0      ; base sprite, shifted 6 pixels to right
                     defb 0,4,0
                     defb 0,14,0
                     defb 0,127,192
@@ -378,31 +449,35 @@ main_loop:
         defm "SCORE: "
 	score_string_len	equ $ - score_string
     title1
-        db 22,5,14,17,0,16,3,19,0
+        db 22,2,14,17,0,16,3,19,0
         defm "PLAY"
     title1_string_len   equ $ - title1
     title2
-        db 22,7,9,17,0,16,2,19,1
+        db 22,4,9,17,0,16,2,19,1
         defm "SPACE INVADERS"
     title2_string_len   equ $ - title2
     alien_score_high
-		db 22,11,12,17,0,16,7,19,0
+		db 22,8,12,17,0,16,7,19,0
         defm "= 30 POINTS"
 	alien_score_high_len	equ $ - alien_score_high
     alien_score_med
-		db 22,13,12,17,0,16,7,19,0
+		db 22,10,12,17,0,16,7,19,0
         defm "= 20 POINTS"
 	alien_score_med_len		equ $ - alien_score_med
     alien_score_low
-		db 22,15,12,17,0,16,7,19,0
+		db 22,12,12,17,0,16,7,19,0
         defm "= 10 POINTS"
 	alien_score_low_len		equ $ - alien_score_low
-	start_string		
-		db 22,21,7,17,0,16,4,19,0
-        defm "PRESS 'S' TO START"
-    start_string_len	equ $ - start_string
     poorly_written:
-        db 22,18,6,17,0,16,7,19,0
+        db 22,15,6,17,0,16,7,19,0
         defm "Poorly coded by Matt."
     poorly_written_len  equ $ - poorly_written
+    keys_string		
+		db 22,20,0,17,0,16,4,19,0
+        defm "'Z'=LEFT,'X'=RIGHT,'SPACE'=FIRE"
+    keys_string_len	equ $ - keys_string
+    start_string		
+		db 22,18,7,17,0,16,4,19,0
+        defm "PRESS 'S' TO START"
+    start_string_len	equ $ - start_string
 ret

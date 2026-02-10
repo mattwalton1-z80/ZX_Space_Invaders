@@ -19,7 +19,7 @@ move_aliens_left:
     jp reset_movecounter        ; jump to end
 
 move_aliens_left0:
-    ld ix,a1_db                 ; get alien 1 database
+    ld ix,ar1_db                 ; get alien 1 database
     dec (ix+2)                  ; decrement low bit position by 1
 
     ; ld h,0
@@ -28,7 +28,7 @@ move_aliens_left0:
     ; ld l,a
     ; ld (score),hl               ; show current x position in Score
 
-    ld hl,a1_db                 ; use HL to move along bytes in the row
+    ld hl,ar1_db                 ; use HL to move along bytes in the row
     jr alien_row_lhs_check
 
     ; Check we haven't hit the LHS of the screen...
@@ -81,7 +81,7 @@ move_aliens_right:
     jr reset_movecounter        ; jump to end 
 
 move_aliens_right0:
-    ld ix,a1_db                 ; get alien 1 database
+    ld ix,ar1_db                 ; get alien 1 database
     inc (ix+2)                  ; advance low bit position by 1
     
     ; ld a,(ix+2)
@@ -89,7 +89,7 @@ move_aliens_right0:
     ; ld l,a
     ; ld (score),hl               ; show current x position in Score
     
-    ld hl,a1_db                 ; use HL to move along bytes in the row
+    ld hl,ar1_db                 ; use HL to move along bytes in the row
     jr alien_row_rhs_check
 
     ; Check we haven't hit the RHS of the screen...

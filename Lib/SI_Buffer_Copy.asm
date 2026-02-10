@@ -3,7 +3,7 @@ buf2screen:
 
 ;alien_copy:
     ; check for existence of each row before copying
-    ld ix,a1_db               ; get alien 1 (only row) database
+    ld ix,ar1_db               ; get alien 1 (only row) database
     or a                        ; reset carry flag
     ld a,(ix)                   ; test if row exists
     rra                         ; rotate low bit into carry
@@ -29,7 +29,7 @@ buf2screen:
 
 ; alien_copy2:
 ;     ; check for existence of each row before copying
-;     ld ix,a2_1_db               ; get alien 2 (first row) database
+;     ld ix,ar2_1_db               ; get alien 2 (first row) database
 ;     or a                        ; reset carry flag
 ;     ld a,(ix)                   ; test if row exists
 ;     rra                         ; rotate low bit into carry
@@ -51,7 +51,7 @@ buf2screen:
 
 ; alien_copy3:
 ;     ; check for existence of each row before copying
-;     ld ix,a2_2_db               ; get alien 2 (second row) database
+;     ld ix,ar2_2_db               ; get alien 2 (second row) database
 ;     or a                        ; reset carry flag
 ;     ld a,(ix)                   ; test if row exists
 ;     rra                         ; rotate low bit into carry
@@ -73,7 +73,7 @@ buf2screen:
 
 ; alien_copy4:
 ;     ; check for existence of each row before copying
-;     ld ix,a3_1_db               ; get alien 3 (first row) database
+;     ld ix,ar3_1_db               ; get alien 3 (first row) database
 ;     or a                        ; reset carry flag
 ;     ld a,(ix)                   ; test if row exists
 ;     rra                         ; rotate low bit into carry
@@ -95,7 +95,7 @@ buf2screen:
 
 ; alien_copy5:
 ;     ; check for existence of each row before copying
-;     ld ix,a3_2_db               ; get alien 3 (second row) database
+;     ld ix,ar3_2_db               ; get alien 3 (second row) database
 ;     or a                        ; reset carry flag
 ;     ld a,(ix)                   ; test if row exists
 ;     rra                         ; rotate low bit into carry

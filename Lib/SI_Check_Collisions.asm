@@ -9,7 +9,7 @@ check_bullet_collision:
 	; get bottom row of aliens
 	; check if row exists
 check_alien_row_bottom:
-    ld ix,a1_db                 ; get alien 1 database
+    ld ix,ar1_db                 ; get alien 1 database
     bit $00,(ix)				; test first bit of exists flag
 	jr z,check_alien_row_second_from_bottom	; if row doesn't exist (Z flag is set when bit tested is zero), skip to next row
 	
