@@ -6,12 +6,12 @@ check_bullet_collision:
 	ld h,(ix)               ; otherwise, get screen position high byte
     ld l,(ix+1)             ; get screen position low byte
 	
-	; get bottom row of aliens
+	; get top row of aliens
 	; check if row exists
-check_alien_row_bottom:
+check_alien_row_a1:
     ld ix,ar1_db                 ; get alien 1 database
     bit $00,(ix)				; test first bit of exists flag
-	jr z,check_alien_row_second_from_bottom	; if row doesn't exist (Z flag is set when bit tested is zero), skip to next row
+	jr z,check_alien_row_a2_1	; if row doesn't exist (Z flag is set when bit tested is zero), skip to next row
 	
 	; if it does, get alien position
 	ld 	a,(ix+1)				; get high byte of alien position
@@ -34,8 +34,8 @@ check_alien_row_bottom:
 										; otherwise, check next alien row
 	
 	
-check_alien_row_second_from_bottom:
-	; get second from bottom row of aliens
+check_alien_row_a2_1:
+	; get second row of aliens
 	; check if row exists
 	; if so, check if alien Y position is close to that of bullet Y position
 	; set IX to alien row, jump to individual check

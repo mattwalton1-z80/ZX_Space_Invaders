@@ -57,8 +57,6 @@ check_alien_row_ar2_1:
 	ret
 	
 check_row_collision_alien_1:
-	call debug
-	
 	; IX contains address of alien row
 	ld ix,ar1_db			; get alien 1 database
 	ld a,(ix+2)				; get low byte of starting alien row position
@@ -67,6 +65,10 @@ check_row_collision_alien_1:
 	sla a
 	sla a
 	ld b,a					; store gross alien starting position
+
+	push bc
+	call debug
+	pop bc
 
 	; add pixels according to alien offset (for Alien 1 type)
 	ld a,(alienoffset)
@@ -149,24 +151,15 @@ check_row_collision_loop:
 	; if close (how to check?) then set special flag to show that alien has been hit and leave routine
 	bit $00,(ix)						; test first bit of exists flag
  	jr z,check_row_collision_loop_next	; if alien doesn't exist, skip to next one
-	
-	; check if value a (bullet position) is between values d and d+7 (alien type 1 being 8 pixels wide)
-	; push de									; store current alien (d) and bullet (e) positions
-	xor a									; reset carry
-	ld a,e									; retrieve bullet position from E
-	cp d									; compare with lower limit d
-	jr c,check_row_collision_loop_next		; a is less than d so skip to next
-	ld a,d									; add 7 to d
-	add	a,7
-	ld c,a
-	ld a,e									; retrieve bullet position from e
-	cp c									; compare with upper limit d+7
-	jr z,alien1_hit							; if zero, a is equal to upper bound so alien has been hit
-	jr nc,check_row_collision_loop_next		; if not negative then a is greater than d so skip 
-	jr alien1_hit							; otherwise,
+	ld a,e								; retrieve bullet position from E
+	sub d								; subtract position of alien from position of bullet
+	ret m								; if negative, return from check_row_collision_alien_1 as bullet is to left of alien
+	jr z,alien1_hit						; if zero, alien has been hit
+	sub 8								; if positive, subtract pixel width of alien to see if bullet was on target
+	jp m,alien1_hit						; if result is negative, alien has been hit
+										; otherwise, loop to check next alien in the row
 
 check_row_collision_loop_next:
-	; pop de								; restore current alien (d) and bullet (e) positions
 	inc ix								; advance IX to next alien in row
 	inc ix								
  	ld a,d								; add 16 (2 chars * 8 pixels) to alien position in D to test next						

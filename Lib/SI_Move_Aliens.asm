@@ -21,13 +21,6 @@ move_aliens_left:
 move_aliens_left0:
     ld ix,ar1_db                 ; get alien 1 database
     dec (ix+2)                  ; decrement low bit position by 1
-
-    ; ld h,0
-    ; ld a,(ix+2)
-    ; and 31
-    ; ld l,a
-    ; ld (score),hl               ; show current x position in Score
-
     ld hl,ar1_db                 ; use HL to move along bytes in the row
     jr alien_row_lhs_check
 

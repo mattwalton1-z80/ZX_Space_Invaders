@@ -11,8 +11,17 @@ move_base:
     call nc,base_move_left  ; player left.
     rr d                    ; check next key ("X")
     call nc,base_move_right ; player right.
+    rr d                    ; check next key ("C")
+    push de                 ; preserve de
+    call nc,debug           ; debug!
+    pop de                  ; retrieve de
     rr e                    ; check next key ("Space")
+    push de                 ; preserve de
     call nc,base_fire       ; bullet fired
+    pop de                  ; retrieve de
+    rr e
+    rr e                    ; check key "M"
+    call nc,screen_setup    ; abort game
     ret
 
 base_move_left:
@@ -59,7 +68,7 @@ base_fire:
     ld (ix),a
     ld a,(basex)            ; get and store current basex position to use for bullet low byte
     ld (ix+1),a
-    
+
     ld de,$400
 Laserloop:
 	add hl,de
@@ -73,7 +82,7 @@ Laserloop:
     
     ld a,(baseoffset)       ; get and store base offset at time of firing
     ld (bbulletoffset),a
-    cp 0                    ; if the offset is non-zero then add 1 to x coord
+    cp 0                    ; if the offset is non-zero then add 1 to x coord (this is because the bullet is 1 char right of the base position due to pixel shifts)
     ret z
-    inc (ix+1)              
+    inc (ix+1)    
     ret

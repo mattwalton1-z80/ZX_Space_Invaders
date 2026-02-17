@@ -20,6 +20,7 @@ cancel_bullet:
 	xor a					
 	ld (ix+1),a				; reset position low byte to 0
 	ld (bulletkill),a		; reset bullet kill flag to 0
+	ld (bbulletoffset),a	; reset bullet offset to 0
 	ret
 
 	

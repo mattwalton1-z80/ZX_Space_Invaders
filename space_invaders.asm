@@ -86,8 +86,6 @@ main_loop:
     call delete_base            ; delete base from current position
     call delete_aliens          ; delete aliens from current position
 	call delete_bullet			; delete base bullet from current position
-	
-    call check_bullet_collision
 
     call move_base              ; read keyboard
 	
@@ -96,8 +94,9 @@ main_loop:
     cp 20                       ; compare against some value
     call z,move_aliens          ; if match, time to move the aliens
 
-	call move_bullet			; move bullet if present and check for collisions
-
+    call move_bullet			; move bullet if present and check for collisions
+    call check_bullet_collision
+	
     call draw_base              ; repaint base in new position
     call draw_aliens            ; draw row of aliens in current position
 	call draw_bullet			; draw bullet in new location if present
@@ -127,10 +126,11 @@ main_loop:
     include "./lib/SI_Move_Base.asm"
     include "./lib/SI_Move_Aliens.asm"
 	include "./lib/SI_Move_Bullet.asm"
-	include "./lib/SI_Check_Collisions.asm"
+	include "./lib/SI_Check_Collisions - Copy.asm"
     include "./lib/SI_Draw_Sprites.asm"
     include "./lib/SI_Buffer_Copy.asm"
 	include "./lib/SI_Intro_Screen.asm"
+    include "./lib/SI_Debug.asm"
 
 
 ; variable definitions
@@ -153,8 +153,8 @@ main_loop:
 
 ; alien row 1 database 
     ar1_db          defb 0          ; whole line exists (11x alien 1) (0=no)
-                    defb 0,0        ; y position of line (row)
-                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0        ; x, y position of line 
+                    defb 0,0        ; per alien pair: alien exists (0=no), relative x position of alien from beginning of line
                     defb 0,0
                     defb 0,0
                     defb 0,0
@@ -168,8 +168,8 @@ main_loop:
 
 ; alien row 2 database
     ar2_1_db        defb 0          ; whole line exists (11x alien 2) (0=no)
-                    defb 0,0        ; y position of line (row)
-                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0        ; x, y position of line
+                    defb 0,0        ; per alien pair: alien exists (0=no), relative x position of alien from beginning of line
                     defb 0,0
                     defb 0,0
                     defb 0,0
@@ -183,8 +183,8 @@ main_loop:
 
 ; alien row 3 database
     ar2_2_db        defb 0          ; whole line exists (11x alien 2) (0=no)
-                    defb 0,0        ; y position of line (row)
-                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0        ; x, y position of line
+                    defb 0,0        ; per alien pair: alien exists (0=no), relative x position of alien from beginning of line
                     defb 0,0
                     defb 0,0
                     defb 0,0
@@ -198,8 +198,8 @@ main_loop:
 
 ; alien row 4 database
     ar3_1_db        defb 0          ; whole line exists (11x alien 3) (0=no)
-                    defb 0,0        ; y position of line (row)
-                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0        ; x, y position of line
+                    defb 0,0        ; per alien pair: alien exists (0=no), relative x position of alien from beginning of line
                     defb 0,0
                     defb 0,0
                     defb 0,0
@@ -213,8 +213,8 @@ main_loop:
 
 ; alien row 5 database
     ar3_2_db        defb 0          ; whole line exists (11x alien 3) (0=no)
-                    defb 0,0        ; y position of line (row)
-                    defb 0,0        ; per alien pair: alien exists (0=no), x position of alien
+                    defb 0,0        ; x, y position of line
+                    defb 0,0        ; per alien pair: alien exists (0=no), relative x position of alien from beginning of line
                     defb 0,0
                     defb 0,0
                     defb 0,0
@@ -474,7 +474,7 @@ main_loop:
     poorly_written_len  equ $ - poorly_written
     keys_string		
 		db 22,20,0,17,0,16,4,19,0
-        defm "'Z'=LEFT,'X'=RIGHT,'SPACE'=FIRE"
+        defm "'Z'=LEFT 'X'=RIGHT 'SPACE'=FIRE"
     keys_string_len	equ $ - keys_string
     start_string		
 		db 22,18,7,17,0,16,4,19,0
